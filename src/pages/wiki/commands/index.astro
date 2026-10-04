@@ -1,0 +1,43 @@
+---
+import Wiki from "../../../layouts/Wiki.astro";
+---
+
+<Wiki
+  title="Commands"
+  description="One page per puv command, with the forms that command accepts."
+>
+  <p class="kicker">Wiki</p>
+  <h1>Commands</h1>
+  <p>
+    The <a href="/wiki/new-project">new project</a> page is the short walk. This table is only the
+    map. The definition, and the examples, live on the linked page.
+  </p>
+  <table>
+    <thead>
+      <tr><th>Command</th><th>What it does</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><a href="/wiki/commands/init">puv init</a></td><td>Start a project. A name creates the directory</td></tr>
+      <tr><td><a href="/wiki/commands/use">puv use</a></td><td>Install a PHP line and record the exact patch</td></tr>
+      <tr><td><a href="/wiki/commands/create">puv create</a></td><td>Fetch an application skeleton</td></tr>
+      <tr><td><a href="/wiki/commands/contain">puv contain</a></td><td>Import composer.json and composer.lock</td></tr>
+      <tr><td><a href="/wiki/commands/add">puv add</a></td><td>Record a dependency, resolve, lock, install</td></tr>
+      <tr><td><a href="/wiki/commands/remove">puv remove</a></td><td>Drop a dependency, relock, sync</td></tr>
+      <tr><td><a href="/wiki/commands/install">puv install</a></td><td>Install the lock. With a package, alias of add</td></tr>
+      <tr><td><a href="/wiki/commands/lock">puv lock</a></td><td>Resolve and write puv.lock</td></tr>
+      <tr><td><a href="/wiki/commands/sync">puv sync</a></td><td>Install exactly puv.lock. No resolve</td></tr>
+      <tr><td><a href="/wiki/commands/run">puv run</a></td><td>Run a file, a script, or a snippet</td></tr>
+      <tr><td><a href="/wiki/commands/load">puv load</a></td><td>Project-local tool, own environment</td></tr>
+      <tr><td><a href="/wiki/commands/tool">puv tool</a></td><td>Global tool, own environment</td></tr>
+      <tr><td><a href="/wiki/commands/list">puv list</a></td><td>Installed packages, extensions, and their dependencies</td></tr>
+      <tr><td><a href="/wiki/commands/why">puv why</a></td><td>Why a package or extension is installed</td></tr>
+      <tr><td><a href="/wiki/commands/info">puv info</a></td><td>Metadata for one package, or one release</td></tr>
+      <tr><td><a href="/wiki/commands/audit">puv audit</a></td><td>Advisories, outdated packages, fitting upgrades</td></tr>
+      <tr><td><a href="/wiki/commands/check">puv check</a></td><td>Syntax and project consistency</td></tr>
+      <tr><td><a href="/wiki/commands/build">puv build</a></td><td>Run the build script, or write dist/</td></tr>
+      <tr><td><a href="/wiki/commands/package">puv package</a></td><td>Write dist/ as phar, zip, or tar</td></tr>
+      <tr><td><a href="/wiki/commands/php">puv php</a></td><td>List, install, and remove runtimes</td></tr>
+      <tr><td><a href="/wiki/commands/prune">puv prune</a></td><td>Drop cache entries nothing references</td></tr>
+    </tbody>
+  </table>
+</Wiki>

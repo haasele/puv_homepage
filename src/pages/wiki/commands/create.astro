@@ -1,0 +1,40 @@
+---
+import Wiki from "../../../layouts/Wiki.astro";
+---
+
+<Wiki
+  title="puv create"
+  description="Fetch a Laravel, CodeIgniter, Symfony, or Slim skeleton and import its composer.json."
+>
+  <p class="kicker">Wiki</p>
+  <h1>create</h1>
+  <p>
+    <code>puv create</code> fetches an application skeleton. <code>puv init</code> starts an empty
+    project. <code>create</code> starts from a named template.
+  </p>
+
+  <h2>Named templates</h2>
+  <pre class="block">puv create laravel blog
+puv create codeigniter
+puv create symfony
+puv create slim</pre>
+  <p>
+    The first argument is the template. <code>puv create laravel blog</code> fetches the Laravel
+    skeleton into <code>blog</code>. <code>codeigniter</code>, <code>symfony</code>, and
+    <code>slim</code> are the other template names.
+  </p>
+
+  <h2>No name</h2>
+  <pre class="block">puv create</pre>
+  <p>
+    In a terminal, <code>puv create</code> with no template asks which template to use.
+  </p>
+
+  <h2>Composer files in the skeleton</h2>
+  <p>
+    A <code>composer.json</code> in the skeleton is imported with
+    <a href="/wiki/commands/contain"><code>contain</code></a>. What that import keeps, copies,
+    and skips is that page. Installing the resulting lock is
+    <a href="/wiki/commands/sync"><code>puv sync</code></a>.
+  </p>
+</Wiki>

@@ -1,0 +1,54 @@
+---
+import Wiki from "../../layouts/Wiki.astro";
+---
+
+<Wiki
+  title="Resolution"
+  description="How puv reads Composer v2 metadata, solves with PubGrub, and checks archive hashes."
+>
+  <p class="kicker">Wiki</p>
+  <h1>Resolution</h1>
+  <p>
+    Metadata is Composer v2. The request is
+    <code>GET /p2/&#123;vendor&#125;/&#123;package&#125;.json</code> on
+    <code>https://repo.packagist.org</code>, or on <code>PUV_REGISTRY_URL</code> when that is set.
+    The solver is PubGrub.
+  </p>
+  <p>
+    It picks the highest stable release, and it prefers a version already in
+    <code>puv.lock</code> when that version still fits.
+    <a href="/wiki/commands/lock"><code>puv lock --upgrade</code></a> ignores locked versions and
+    resolves again. <a href="/wiki/commands/add"><code>puv add</code></a> is the command that
+    resolves as part of recording a dependency. <a href="/wiki/commands/sync"><code>puv sync</code></a>
+    does not resolve.
+  </p>
+
+  <h2>Virtual packages</h2>
+  <p>
+    <code>php</code>, <code>ext-*</code>, <code>lib-*</code>, <code>composer-plugin-api</code>, and
+    <code>composer-runtime-api</code> are virtual. A required extension the runtime does not ship
+    fails the lock, by name. It is not downloaded later.
+  </p>
+  <pre class="block">puv add some/package</pre>
+  <p>
+    If that package requires <code>ext-imagick</code> and the pinned StaticPHP build does not
+    include it, the lock stops and names <code>ext-imagick</code>. The command to inspect a
+    runtime’s set is <a href="/wiki/commands/php"><code>puv php</code></a>. The command that
+    explains an installed extension after the fact is
+    <a href="/wiki/commands/why"><code>puv why</code></a>.
+  </p>
+
+  <h2>Hashes</h2>
+  <p>
+    <code>dist.shasum</code> is checked when Packagist sends one. The lock also stores the
+    SHA-256 of the archive. A download prints a progress line on stderr. A cached archive stays
+    quiet.
+  </p>
+
+  <h2>Advisories</h2>
+  <p>
+    <a href="/wiki/commands/audit"><code>puv audit</code></a> reads Packagist security advisories.
+    A matching advisory exits non-zero. Upgrades that still satisfy the constraint are listed
+    separately from newer releases that fall outside it.
+  </p>
+</Wiki>

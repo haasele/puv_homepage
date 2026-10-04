@@ -1,0 +1,73 @@
+---
+import Wiki from "../../../layouts/Wiki.astro";
+---
+
+<Wiki
+  title="puv contain"
+  description="Copy a Composer project into puv.toml and puv.lock without deleting the Composer files."
+>
+  <p class="kicker">Wiki</p>
+  <h1>contain</h1>
+  <p>
+    <code>puv contain</code> imports the Composer project in the current directory. The walk
+    around it is an <a href="/wiki/existing-project">existing project</a>.
+  </p>
+
+  <h2>Keep the Composer files</h2>
+  <pre class="block">puv contain
+puv sync</pre>
+  <p><code>require</code> and <code>require-dev</code> move into <code>puv.toml</code>.</p>
+  <ul>
+    <li>
+      If <code>composer.lock</code> is present, that graph is copied into <code>puv.lock</code>
+      and not resolved again.
+    </li>
+    <li>
+      If <code>composer.lock</code> is missing, puv resolves from <code>composer.json</code>.
+    </li>
+  </ul>
+  <p>
+    Plain shell scripts are copied into <code>[scripts]</code>. PHP callables,
+    <code>@composer</code> calls, and plugin events are skipped with a warning. The Composer
+    files stay on disk.
+  </p>
+  <pre class="block">&#123;
+  "require": &#123;
+    "symfony/console": "^7.0"
+  &#125;,
+  "require-dev": &#123;
+    "phpunit/phpunit": "^11.0"
+  &#125;,
+  "scripts": &#123;
+    "test": "phpunit",
+    "post-install-cmd": "@composer dump-autoload"
+  &#125;
+&#125;</pre>
+  <p>That file becomes:</p>
+  <pre class="block">[dependencies]
+symfony/console = "^7.0"
+
+[dev-dependencies]
+phpunit/phpunit = "^11.0"
+
+[scripts]
+test = "phpunit"</pre>
+  <p>
+    <code>test</code> is a plain shell command, so it is copied.
+    <code>post-install-cmd</code> calls <code>@composer</code>, so it is skipped and named in the
+    warning. puv does not run scripts from the downloaded <code>composer.json</code> of a
+    dependency either. That limit is <a href="/wiki/scope">scope</a>.
+  </p>
+
+  <h2>Delete the Composer files</h2>
+  <pre class="block">puv contain --clean</pre>
+  <p>
+    <code>--clean</code> is the form that removes the Composer files after the import. Without
+    the flag they stay, so you can diff <code>puv.toml</code> against <code>composer.json</code>
+    before you delete anything.
+  </p>
+  <p>
+    Install the imported lock with <a href="/wiki/commands/sync"><code>puv sync</code></a>. It
+    does not resolve again when the lock was copied.
+  </p>
+</Wiki>

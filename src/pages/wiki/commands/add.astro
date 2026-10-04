@@ -1,0 +1,57 @@
+---
+import Wiki from "../../../layouts/Wiki.astro";
+---
+
+<Wiki
+  title="puv add"
+  description="Record a Packagist dependency, resolve it, write puv.lock, and install it."
+>
+  <p class="kicker">Wiki</p>
+  <h1>add</h1>
+  <p>
+    <code>puv add</code> records a dependency, resolves, writes <code>puv.lock</code>, and
+    installs. <code>puv install &lt;pkg&gt;</code> is the same command. See
+    <a href="/wiki/commands/install"><code>install</code></a>.
+  </p>
+
+  <h2>A package</h2>
+  <pre class="block">puv add symfony/console</pre>
+  <p>
+    The name is a Packagist package. puv asks the Composer v2 metadata API for it, picks the
+    highest stable release, and prefers a version already in the lock when one still fits. How
+    that choice works is <a href="/wiki/resolution">resolution</a>.
+  </p>
+  <p>
+    The result is a line under <code>[dependencies]</code> in <code>puv.toml</code>, a new
+    <code>puv.lock</code>, and links under <code>.puv/deps/</code> into the content-addressed
+    cache. A download prints a progress line on stderr. A cached archive stays quiet.
+  </p>
+
+  <h2>A constraint</h2>
+  <pre class="block">puv add symfony/console:^7.0</pre>
+  <p>
+    The constraint after the colon is the one written into the manifest. The solver stays inside
+    it. <code>^7.0</code> will not take an 8.x release.
+  </p>
+
+  <h2>A dev dependency</h2>
+  <pre class="block">puv add --dev phpunit/phpunit</pre>
+  <p>
+    <code>--dev</code> writes the same kind of line under <code>[dev-dependencies]</code>. The
+    package is installed with the project. It is not a
+    <a href="/wiki/commands/load">project tool</a> and not a
+    <a href="/wiki/commands/tool">global tool</a>. Those get their own environment and do not
+    share this solve.
+  </p>
+
+  <h2>When the runtime cannot satisfy it</h2>
+  <pre class="block">puv add some/package</pre>
+  <p>
+    <code>php</code>, <code>ext-*</code>, and <code>lib-*</code> are virtual. If the package
+    requires an extension the pinned StaticPHP build does not ship, the lock fails and names that
+    extension. Nothing is half-installed.
+  </p>
+  <p>
+    Taking a package back out is <a href="/wiki/commands/remove"><code>puv remove</code></a>.
+  </p>
+</Wiki>

@@ -1,0 +1,35 @@
+---
+import Wiki from "../../../layouts/Wiki.astro";
+---
+
+<Wiki
+  title="puv list"
+  description="Show installed packages, extensions, and the dependencies of each."
+>
+  <p class="kicker">Wiki</p>
+  <h1>list</h1>
+  <p>
+    <code>puv list</code> prints what the project has installed: packages, extensions, and their
+    dependencies.
+  </p>
+
+  <h2>The project graph</h2>
+  <pre class="block">puv add symfony/console
+puv add --dev phpunit/phpunit
+puv list</pre>
+  <p>
+    After those two adds, the list includes <code>symfony/console</code>,
+    <code>phpunit/phpunit</code>, their dependencies, and the extensions in that graph.
+    Newer releases are a different command,
+    <a href="/wiki/commands/audit"><code>puv audit</code></a>.
+  </p>
+
+  <h2>One package</h2>
+  <p>
+    The list is the whole graph. The reason a single name is present is
+    <a href="/wiki/commands/why"><code>puv why</code></a>. Version, license, and authors for one
+    release are <a href="/wiki/commands/info"><code>puv info</code></a>.
+  </p>
+  <pre class="block">puv why symfony/console
+puv info symfony/console</pre>
+</Wiki>

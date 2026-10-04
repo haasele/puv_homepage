@@ -1,0 +1,42 @@
+---
+import Wiki from "../../../layouts/Wiki.astro";
+---
+
+<Wiki
+  title="puv package"
+  description="Write dist/ as a PHAR, a zip, or a tar of the application and its dependencies."
+>
+  <p class="kicker">Wiki</p>
+  <h1>package</h1>
+  <p>
+    <code>puv package</code> writes <code>dist/</code>. The archive contains the application and
+    its dependencies. The PHP runtime stays outside. puv does not embed the runtime inside a PHAR.
+  </p>
+
+  <h2>The manifest format</h2>
+  <pre class="block">[package]
+format = "phar"
+entrypoint = "src/main.php"</pre>
+  <pre class="block">puv package</pre>
+  <p>
+    <code>format</code> and <code>entrypoint</code> come from <code>[package]</code>. That table
+    is on <a href="/wiki/files">files</a>.
+  </p>
+
+  <h2>A format for one run</h2>
+  <pre class="block">puv package --format phar
+puv package --format zip
+puv package --format tar</pre>
+  <p>
+    <code>--format</code> is <code>phar</code>, <code>zip</code>, or <code>tar</code>. It selects
+    the archive for this invocation. The runtime stays outside all three.
+  </p>
+
+  <h2>Build versus package</h2>
+  <p>
+    <a href="/wiki/commands/build"><code>puv build</code></a> runs the <code>build</code> script
+    when you declared one, and writes <code>dist/</code> only when you did not.
+    <code>puv package</code> is the command whose job is <code>dist/</code>, with an explicit
+    format.
+  </p>
+</Wiki>

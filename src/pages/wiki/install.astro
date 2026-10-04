@@ -4,38 +4,41 @@ import Wiki from "../../layouts/Wiki.astro";
 
 <Wiki
   title="Install"
-  description="Install the latest PUV release from github.com/haasele/puv with one command, or build the binary from source."
+  description="Install the latest PUV release on Linux, macOS, or Windows, or build the binary from source."
 >
   <p class="kicker">Wiki</p>
   <h1>Install</h1>
   <p>
-    One command. It downloads the asset for this machine from the latest GitHub release of
-    <a href="https://github.com/haasele/puv">haasele/puv</a> and copies <code>puv</code> to
-    <code>~/.local/bin</code>.
-  </p>
-  <pre class="block">curl -fsSL https://puv.haasele.dev/install.sh | sh</pre>
-  <p>
-    The script lives at <a href="/install.sh"><code>/install.sh</code></a> on this site. Override
-    the destination with <code>PUV_INSTALL_DIR</code>.
+    One command per platform. Both scripts pick the archive for this machine from the latest
+    GitHub release of <a href="https://github.com/haasele/puv">haasele/puv</a> and install it to
+    <code>$&#123;PUV_INSTALL_DIR:-$HOME/.local/bin&#125;</code>. On Windows that directory is
+    <code>%USERPROFILE%\.local\bin</code>.
   </p>
 
-  <h2>What the script does</h2>
-  <ol>
-    <li>Refuses anything that is not Linux.</li>
-    <li>Maps <code>x86_64</code> and <code>aarch64</code> to a glibc target triple. Anything else stops.</li>
-    <li>
-      Downloads <code>puv-&lt;target&gt;.tar.gz</code> from
-      <code>https://github.com/haasele/puv/releases/latest/download/</code>.
-    </li>
-    <li>
-      If the same release contains <code>sha256sums.txt</code>, checks the archive. A missing
-      checksum file does not fail the install. A present line that does not match does.
-    </li>
-    <li>Extracts the file named <code>puv</code> and installs it mode <code>0755</code>.</li>
-  </ol>
+  <h2>Linux and macOS</h2>
+  <pre class="block">curl -fsSL https://raw.githubusercontent.com/haasele/puv/main/install.sh | sh</pre>
+  <p>
+    The script is
+    <a href="https://github.com/haasele/puv/blob/main/install.sh"><code>install.sh</code></a>
+    on <code>main</code>. Git Bash, MSYS, and Cygwin on Windows can use this command too. It
+    installs <code>puv.exe</code> there.
+  </p>
+
+  <h2>Windows</h2>
+  <pre class="block">irm https://raw.githubusercontent.com/haasele/puv/main/install.ps1 | iex</pre>
+  <p>
+    Run that in PowerShell. The script is
+    <a href="https://github.com/haasele/puv/blob/main/install.ps1"><code>install.ps1</code></a>
+    on <code>main</code>. It copies <code>puv.exe</code> and adds that directory to the user
+    <code>PATH</code>.
+  </p>
 
   <h2>Release files</h2>
-  <p>A release the installer can use attaches these names:</p>
+  <p>
+    Release builds are published from the Actions tab: Release, then Run workflow. Both installers
+    read whatever GitHub currently marks as the latest release. Each archive contains one binary,
+    <code>puv</code>, or <code>puv.exe</code> on Windows.
+  </p>
   <table>
     <thead>
       <tr><th>File</th><th>Machine</th></tr>
@@ -43,21 +46,22 @@ import Wiki from "../../layouts/Wiki.astro";
     <tbody>
       <tr><td>puv-x86_64-unknown-linux-gnu.tar.gz</td><td>Linux, glibc, 64-bit Intel/AMD</td></tr>
       <tr><td>puv-aarch64-unknown-linux-gnu.tar.gz</td><td>Linux, glibc, 64-bit ARM</td></tr>
-      <tr><td>sha256sums.txt</td><td>Optional. Lines are <code>&lt;sha256&gt;&nbsp;&nbsp;&lt;filename&gt;</code></td></tr>
+      <tr><td>puv-x86_64-apple-darwin.tar.gz</td><td>macOS, 64-bit Intel</td></tr>
+      <tr><td>puv-aarch64-apple-darwin.tar.gz</td><td>macOS, 64-bit ARM</td></tr>
+      <tr><td>puv-x86_64-pc-windows-msvc.tar.gz</td><td>Windows, 64-bit Intel/AMD</td></tr>
+      <tr><td>puv-aarch64-pc-windows-msvc.tar.gz</td><td>Windows, 64-bit ARM</td></tr>
+      <tr><td>sha256sums.txt</td><td><code>sha256sum</code> output: the hash, two spaces, then the file name</td></tr>
     </tbody>
   </table>
   <p>
-    The tarball may contain <code>puv</code> at the root or one directory down. The script takes
-    the first file with that name. “Latest” is whatever GitHub currently marks as the latest
-    release, not a version pinned by this website.
-  </p>
-  <p>
-    If that asset is missing, the script exits and prints the source build. It does not fall
-    back to a random binary.
+    PHP runtimes are a separate download. They are prebuilt StaticPHP CLI builds for Linux glibc
+    (<code>x86_64</code> and <code>aarch64</code>), not a compile of php-src. See
+    <a href="/wiki/commands/use"><code>puv use</code></a> and
+    <a href="/wiki/commands/php"><code>puv php</code></a>.
   </p>
 
   <h2>From source</h2>
-  <p>Rust stable, edition 2024, is enough. The workspace lockfile is the one to build.</p>
+  <p>Rust 1.92 or newer. The workspace lockfile is the one to build.</p>
   <pre class="block">git clone https://github.com/haasele/puv
 cd puv
 cargo install --path crates/puv --locked</pre>
@@ -67,22 +71,19 @@ cargo install --path crates/puv --locked</pre>
   </p>
 
   <h2>After install</h2>
-  <pre class="block">puv --version
-mkdir my-tool && cd my-tool
-puv init
-puv use 8.4</pre>
+  <pre class="block">puv --version</pre>
   <p>
-    <code>puv use</code> is the first network call that fetches PHP. The runtime index is
-    StaticPHP’s glibc channel. The next page is
-    <a href="/wiki/getting-started">getting started</a>.
+    The next page is a <a href="/wiki/new-project">new project</a>.
   </p>
 
   <h2>Remove</h2>
+  <p>Linux and macOS:</p>
   <pre class="block">rm "$&#123;PUV_INSTALL_DIR:-$HOME/.local/bin&#125;/puv"</pre>
+  <p>Windows PowerShell, or <code>puv.exe</code> under <code>PUV_INSTALL_DIR</code> when that was set:</p>
+  <pre class="block">Remove-Item "$env:USERPROFILE\.local\bin\puv.exe"</pre>
   <p>
-    That deletes the binary. It leaves <code>~/.cache/puv</code> and
-    <code>~/.local/share/puv</code>. <code>puv prune --global --all</code> clears the cache
-    before you remove the binary. Installed runtimes and global tools stay until
-    <code>puv php remove</code> and <code>puv tool uninstall</code>.
+    That deletes the binary. Cache and installed runtimes stay.
+    <a href="/wiki/commands/prune"><code>puv prune --global</code></a> drops cache entries nothing
+    references. <a href="/wiki/commands/php"><code>puv php remove</code></a> removes runtimes.
   </p>
 </Wiki>

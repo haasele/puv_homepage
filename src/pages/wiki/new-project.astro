@@ -1,0 +1,68 @@
+---
+import Wiki from "../../layouts/Wiki.astro";
+---
+
+<Wiki
+  title="New project"
+  description="Create a PUV project, pin a PHP patch, add Packagist packages, and run a file."
+>
+  <p class="kicker">Wiki</p>
+  <h1>New project</h1>
+  <p>
+    This is the path from an empty directory to a running file. Install is the
+    <a href="/wiki/install">previous page</a>. Each command below has its own page when you want
+    the variants.
+  </p>
+  <pre class="block">puv init
+puv use 8.4
+puv add symfony/console
+puv add --dev phpunit/phpunit
+puv run src/main.php
+puv check
+puv build</pre>
+
+  <h2>What that sequence does</h2>
+  <ol>
+    <li>
+      <a href="/wiki/commands/init"><code>puv init</code></a> starts the project in the current
+      directory. <code>puv init my-app</code> creates the directory first.
+    </li>
+    <li>
+      <a href="/wiki/commands/use"><code>puv use 8.4</code></a> installs the newest 8.4 patch and
+      records that exact version. <code>puv use 8.4.23</code> stays on 8.4.23.
+    </li>
+    <li>
+      <a href="/wiki/commands/add"><code>puv add</code></a> records the dependency, resolves,
+      writes <code>puv.lock</code>, and installs. <code>--dev</code> lands under
+      <code>[dev-dependencies]</code>.
+    </li>
+    <li>
+      <a href="/wiki/commands/run"><code>puv run src/main.php</code></a> runs that file on the
+      project runtime. The generated autoloader is already prepended.
+    </li>
+    <li>
+      <a href="/wiki/commands/check"><code>puv check</code></a> reports syntax and project
+      consistency, including when nothing is wrong.
+    </li>
+    <li>
+      <a href="/wiki/commands/build"><code>puv build</code></a> runs the <code>build</code> script,
+      or writes <code>dist/</code> when the manifest has no such script.
+    </li>
+  </ol>
+
+  <h2>A skeleton instead of an empty project</h2>
+  <pre class="block">puv create laravel blog
+puv create codeigniter
+puv create symfony
+puv create slim</pre>
+  <p>
+    <a href="/wiki/commands/create"><code>puv create</code></a> fetches an application skeleton.
+    With no template name, a terminal asks which one to use. A <code>composer.json</code> in the
+    skeleton is imported with <a href="/wiki/commands/contain"><code>contain</code></a>.
+  </p>
+  <p>
+    The manifest, the lock, and the directories they produce are
+    <a href="/wiki/files">files</a>. A tree that already has Composer files is an
+    <a href="/wiki/existing-project">existing project</a>.
+  </p>
+</Wiki>

@@ -1,0 +1,34 @@
+---
+import Wiki from "../../../layouts/Wiki.astro";
+---
+
+<Wiki
+  title="puv tool"
+  description="Install a global tool in its own environment, with a shim on PATH."
+>
+  <p class="kicker">Wiki</p>
+  <h1>tool</h1>
+  <p>
+    <code>puv tool install</code> installs a global tool. Like
+    <a href="/wiki/commands/load"><code>puv load</code></a>, the tool gets its own environment
+    and does not share the application solve. Unlike <code>load</code>, it is not tied to one
+    project.
+  </p>
+
+  <h2>Install</h2>
+  <pre class="block">puv tool install phpstan/phpstan</pre>
+  <p>
+    The environment is stored under <code>~/.local/share/puv/</code> with the other global tools.
+    A shim is written to <code>~/.local/bin</code>. <code>PUV_BIN_DIR</code> moves that shim
+    directory. <code>PUV_DATA_DIR</code> moves the environment. Both are listed on
+    <a href="/wiki/files">files</a>.
+  </p>
+
+  <h2>Project-local instead</h2>
+  <pre class="block">puv load phpstan/phpstan</pre>
+  <p>
+    Use <code>load</code> when the tool should travel with the project, under
+    <code>.puv/tools/</code>, and <code>tool install</code> when every project on the machine
+    should see the shim.
+  </p>
+</Wiki>

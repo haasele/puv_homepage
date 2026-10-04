@@ -1,0 +1,56 @@
+---
+import Wiki from "../../../layouts/Wiki.astro";
+---
+
+<Wiki
+  title="puv php"
+  description="List, install, and remove StaticPHP CLI runtimes for Linux glibc."
+>
+  <p class="kicker">Wiki</p>
+  <h1>php</h1>
+  <p>
+    <code>puv php</code> manages runtimes on the machine. The project pin is
+    <a href="/wiki/commands/use"><code>puv use</code></a>. These commands install and remove
+    builds without being that pin. Runtimes are prebuilt StaticPHP CLI builds for Linux glibc,
+    <code>x86_64</code> and <code>aarch64</code>.
+  </p>
+
+  <h2>List</h2>
+  <pre class="block">puv php list
+puv php list --all</pre>
+  <p>
+    <code>puv php list</code> shows installed runtimes.
+    <code>puv php list --all</code> shows installed and not-yet-installed releases.
+  </p>
+
+  <h2>Install</h2>
+  <pre class="block">puv php install 8.3
+puv php install 8.3.32
+puv php install --all</pre>
+  <ul>
+    <li><code>8.3</code> installs every 8.3 patch.</li>
+    <li><code>8.3.32</code> installs that patch only.</li>
+    <li><code>--all</code> installs the whole index.</li>
+  </ul>
+  <p>
+    A download prints a progress line on stderr. A cached archive stays quiet. Installed builds
+    live under <code>~/.local/share/puv/</code>.
+  </p>
+  <p>
+    Installing 8.3 this way does not change <code>php</code> in <code>puv.toml</code>.
+    <code>puv use 8.3</code> does, and it records the exact patch.
+  </p>
+
+  <h2>Remove</h2>
+  <pre class="block">puv php remove 8.3
+puv php remove --all</pre>
+  <ul>
+    <li><code>8.3</code> removes every installed 8.3 patch.</li>
+    <li><code>--all</code> removes every runtime puv installed.</li>
+  </ul>
+  <p>
+    Cache archives can remain after the install is gone.
+    <a href="/wiki/commands/prune"><code>puv prune --global</code></a> drops cache entries nothing
+    references.
+  </p>
+</Wiki>

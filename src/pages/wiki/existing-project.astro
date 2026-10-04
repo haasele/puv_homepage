@@ -1,0 +1,40 @@
+---
+import Wiki from "../../layouts/Wiki.astro";
+---
+
+<Wiki
+  title="Existing project"
+  description="Import a Composer project into puv.toml and install the locked graph."
+>
+  <p class="kicker">Wiki</p>
+  <h1>Existing project</h1>
+  <p>
+    A directory that already has <code>composer.json</code> does not start with
+    <a href="/wiki/commands/init"><code>init</code></a>. Import it, then install the graph.
+  </p>
+  <pre class="block">puv contain
+puv sync</pre>
+  <ol>
+    <li>
+      <a href="/wiki/commands/contain"><code>puv contain</code></a> moves <code>require</code> and
+      <code>require-dev</code> into <code>puv.toml</code>. A present <code>composer.lock</code> is
+      copied and not resolved again. A missing lock is resolved from <code>composer.json</code>.
+    </li>
+    <li>
+      <a href="/wiki/commands/sync"><code>puv sync</code></a> installs exactly that lock. It does
+      not resolve.
+    </li>
+  </ol>
+  <p>
+    Plain shell scripts are copied. PHP callables, <code>@composer</code> calls, and plugin events
+    are skipped with a warning. The Composer files stay until
+    <code>puv contain --clean</code>.
+  </p>
+  <p>
+    After that, everyday work is the same as a
+    <a href="/wiki/new-project">new project</a>: <a href="/wiki/commands/add"><code>add</code></a>,
+    <a href="/wiki/commands/run"><code>run</code></a>,
+    <a href="/wiki/commands/check"><code>check</code></a>. What the import will not copy is
+    <a href="/wiki/scope">scope</a>.
+  </p>
+</Wiki>

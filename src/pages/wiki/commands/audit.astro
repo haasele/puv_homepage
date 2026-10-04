@@ -1,0 +1,36 @@
+---
+import Wiki from "../../../layouts/Wiki.astro";
+---
+
+<Wiki
+  title="puv audit"
+  description="Report Packagist security advisories, outdated packages, and upgrades that fit the constraint."
+>
+  <p class="kicker">Wiki</p>
+  <h1>audit</h1>
+  <p>
+    <code>puv audit</code> reads Packagist security advisories and compares the lock with what
+    the manifest still allows.
+  </p>
+
+  <h2>The project</h2>
+  <pre class="block">puv audit</pre>
+  <p>The report has three kinds of line.</p>
+  <ul>
+    <li>A security advisory that matches an installed package. A match exits non-zero.</li>
+    <li>An upgrade that still satisfies the constraint in <code>puv.toml</code>.</li>
+    <li>A newer release that falls outside the constraint. It is listed separately, and it is not offered as the upgrade.</li>
+  </ul>
+  <pre class="block">[dependencies]
+symfony/console = "^7.0"</pre>
+  <p>
+    If the lock has 7.0.1, a later 7.x is an upgrade that fits <code>^7.0</code>. An 8.x release
+    is newer and outside the constraint, so it shows up in the other list. Applying a fitting
+    upgrade is <a href="/wiki/commands/lock"><code>puv lock --upgrade</code></a>, then
+    <a href="/wiki/commands/sync"><code>puv sync</code></a>.
+  </p>
+  <p>
+    <code>audit</code> does not edit the manifest or the lock. The solver rules it is judging
+    are <a href="/wiki/resolution">resolution</a>.
+  </p>
+</Wiki>

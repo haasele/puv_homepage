@@ -1,0 +1,37 @@
+---
+import Wiki from "../../../layouts/Wiki.astro";
+---
+
+<Wiki
+  title="puv check"
+  description="Check PHP syntax and whether the project files agree with each other."
+>
+  <p class="kicker">Wiki</p>
+  <h1>check</h1>
+  <p>
+    <code>puv check</code> checks syntax and project consistency. It prints a summary even when
+    nothing is wrong, so a clean run is still visible.
+  </p>
+
+  <h2>A healthy project</h2>
+  <pre class="block">puv init
+puv use 8.4
+puv add symfony/console
+puv check</pre>
+  <p>
+    The summary covers the project you just built: the manifest, the lock, and the PHP sources.
+    A quiet command would be easy to mistake for a skipped check. <code>check</code> does not
+    stay quiet.
+  </p>
+
+  <h2>Before you package</h2>
+  <pre class="block">puv check
+puv build</pre>
+  <p>
+    Run it before <a href="/wiki/commands/build"><code>puv build</code></a> or
+    <a href="/wiki/commands/package"><code>puv package</code></a> when you want that summary
+    first. <code>check</code> does not write <code>dist/</code>. A manifest that no longer
+    matches the lock is what stops <a href="/wiki/commands/sync"><code>puv sync</code></a>, which
+    then tells you to run <a href="/wiki/commands/lock"><code>puv lock</code></a>.
+  </p>
+</Wiki>

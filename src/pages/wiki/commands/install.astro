@@ -1,0 +1,46 @@
+---
+import Wiki from "../../../layouts/Wiki.astro";
+---
+
+<Wiki
+  title="puv install"
+  description="Install exactly puv.lock, or add a package when you pass one."
+>
+  <p class="kicker">Wiki</p>
+  <h1>install</h1>
+  <p>
+    <code>puv install</code> is two commands, chosen by whether you pass a package. This page is
+    the project command. The binary itself is installed from
+    <a href="/wiki/install">Install</a>.
+  </p>
+
+  <h2>No arguments</h2>
+  <pre class="block">puv install</pre>
+  <p>
+    This installs exactly what <code>puv.lock</code> says. It does not resolve. It is the same
+    install as <a href="/wiki/commands/sync"><code>puv sync</code></a>.
+  </p>
+  <p>
+    If <code>puv.toml</code> drifted from the lock, the command stops and tells you to run
+    <a href="/wiki/commands/lock"><code>puv lock</code></a>. It will not paper over the drift by
+    resolving on its own.
+  </p>
+  <pre class="block"># puv.toml gained a dependency the lock does not know
+puv install
+# stops: run puv lock
+puv lock
+puv install</pre>
+
+  <h2>With a package</h2>
+  <pre class="block">puv install symfony/console
+puv install symfony/console:^7.0</pre>
+  <p>
+    A package argument is an alias of <a href="/wiki/commands/add"><code>puv add</code></a>. It
+    records the dependency, resolves, writes the lock, and installs. A constraint after the colon
+    is written into the manifest.
+  </p>
+  <p>
+    A download prints a progress line on stderr. A cached archive stays quiet. Installed bytes
+    are linked from <code>.puv/deps/</code> into <code>~/.cache/puv/</code>.
+  </p>
+</Wiki>

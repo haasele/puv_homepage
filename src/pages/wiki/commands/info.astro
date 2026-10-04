@@ -1,0 +1,36 @@
+---
+import Wiki from "../../../layouts/Wiki.astro";
+---
+
+<Wiki
+  title="puv info"
+  description="Show version, license, dependencies, dist archive, tags, and authors for a package."
+>
+  <p class="kicker">Wiki</p>
+  <h1>info</h1>
+  <p>
+    <code>puv info</code> prints one package: version, license, dependencies, dist archive, tags,
+    and authors.
+  </p>
+
+  <h2>The installed name</h2>
+  <pre class="block">puv info symfony/console</pre>
+  <p>
+    The argument is a Packagist name. You get the metadata for that package. This is not the
+    reason it is in the tree. That question is
+    <a href="/wiki/commands/why"><code>puv why</code></a>.
+  </p>
+
+  <h2>One release</h2>
+  <pre class="block">puv info symfony/console@7.1.0</pre>
+  <p>
+    <code>pkg@version</code> selects one release. The fields are the same. The version after
+    <code>@</code> is the one whose license, dependencies, dist archive, tags, and authors are
+    shown, including a release the project has not locked.
+  </p>
+  <p>
+    Adding that release to the project is still
+    <a href="/wiki/commands/add"><code>puv add symfony/console:^7.1</code></a>. <code>info</code>
+    does not edit <code>puv.toml</code>.
+  </p>
+</Wiki>

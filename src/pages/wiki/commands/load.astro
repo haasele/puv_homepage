@@ -1,0 +1,39 @@
+---
+import Wiki from "../../../layouts/Wiki.astro";
+---
+
+<Wiki
+  title="puv load"
+  description="Install a project-local tool in its own environment, separate from the app solve."
+>
+  <p class="kicker">Wiki</p>
+  <h1>load</h1>
+  <p>
+    <code>puv load</code> installs a project-local tool. The tool gets its own environment. It
+    does not share a solver with the application dependencies from
+    <a href="/wiki/commands/add"><code>puv add</code></a>.
+  </p>
+
+  <h2>One tool</h2>
+  <pre class="block">puv load phpstan/phpstan</pre>
+  <p>
+    The environment lives at <code>.puv/tools/phpstan/</code>. The app’s
+    <code>[dependencies]</code> do not gain a <code>phpstan/phpstan</code> line because of this
+    command. The manifest can still name project tools under <code>[tool-dependencies]</code>:
+  </p>
+  <pre class="block">[tool-dependencies]
+phpstan/phpstan = "^2.0"</pre>
+  <p>
+    That table is part of <a href="/wiki/files">files</a>. A global install of the same package,
+    with a shim in <code>~/.local/bin</code>, is
+    <a href="/wiki/commands/tool"><code>puv tool install</code></a>.
+  </p>
+
+  <h2>Why it is separate</h2>
+  <p>
+    PHPStan’s own dependencies are solved for PHPStan. They are not solved together with
+    <code>symfony/console</code> or <code>phpunit/phpunit</code>.
+    <code>puv add --dev phpstan/phpstan</code> would put it in the app graph.
+    <code>load</code> does not.
+  </p>
+</Wiki>

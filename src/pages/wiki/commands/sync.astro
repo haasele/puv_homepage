@@ -1,0 +1,43 @@
+---
+import Wiki from "../../../layouts/Wiki.astro";
+---
+
+<Wiki
+  title="puv sync"
+  description="Install exactly puv.lock. Sync does not resolve."
+>
+  <p class="kicker">Wiki</p>
+  <h1>sync</h1>
+  <p>
+    <code>puv sync</code> installs the lock. It is the same install as
+    <a href="/wiki/commands/install"><code>puv install</code></a> with no arguments.
+  </p>
+
+  <h2>A clean tree</h2>
+  <pre class="block">puv sync</pre>
+  <p>
+    Every package in <code>puv.lock</code> is linked into <code>.puv/deps/</code> from the
+    content-addressed cache. Missing archives are downloaded. A download prints a progress line
+    on stderr. A cached archive stays quiet.
+  </p>
+  <p>
+    This is the second step after <a href="/wiki/commands/contain"><code>puv contain</code></a>
+    when you imported a Composer lock and want those bytes on disk without a new solve.
+  </p>
+
+  <h2>A drifted manifest</h2>
+  <pre class="block">puv sync</pre>
+  <p>
+    If <code>puv.toml</code> and <code>puv.lock</code> disagree, sync stops and tells you to run
+    <a href="/wiki/commands/lock"><code>puv lock</code></a>. It does not resolve on its own.
+  </p>
+  <pre class="block"># puv.toml requires symfony/console, the lock does not
+puv sync
+puv lock
+puv sync</pre>
+  <p>
+    <code>.puv/lockb</code> is a cache of the parsed lock so a later sync can skip re-reading it.
+    If the bytes of <code>puv.lock</code> change, <code>lockb</code> is discarded. It is not a
+    second source of truth. The files are drawn on <a href="/wiki/files">files</a>.
+  </p>
+</Wiki>

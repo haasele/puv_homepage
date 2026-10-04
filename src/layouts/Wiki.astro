@@ -9,10 +9,50 @@ interface Props {
 
 const { title, description } = Astro.props;
 const path = Astro.url.pathname.replace(/\/$/, "") || "/";
-const pages = [
-  { href: "/wiki/install", label: "Install" },
-  { href: "/wiki/getting-started", label: "Getting started" },
-  { href: "/wiki/scope", label: "Scope" },
+const groups = [
+  {
+    label: "Guide",
+    pages: [
+      { href: "/wiki/install", label: "Install" },
+      { href: "/wiki/new-project", label: "New project" },
+      { href: "/wiki/existing-project", label: "Existing project" },
+      { href: "/wiki/files", label: "Files" },
+    ],
+  },
+  {
+    label: "Commands",
+    pages: [
+      { href: "/wiki/commands", label: "Overview" },
+      { href: "/wiki/commands/init", label: "init" },
+      { href: "/wiki/commands/use", label: "use" },
+      { href: "/wiki/commands/create", label: "create" },
+      { href: "/wiki/commands/contain", label: "contain" },
+      { href: "/wiki/commands/add", label: "add" },
+      { href: "/wiki/commands/remove", label: "remove" },
+      { href: "/wiki/commands/install", label: "install" },
+      { href: "/wiki/commands/lock", label: "lock" },
+      { href: "/wiki/commands/sync", label: "sync" },
+      { href: "/wiki/commands/run", label: "run" },
+      { href: "/wiki/commands/load", label: "load" },
+      { href: "/wiki/commands/tool", label: "tool" },
+      { href: "/wiki/commands/list", label: "list" },
+      { href: "/wiki/commands/why", label: "why" },
+      { href: "/wiki/commands/info", label: "info" },
+      { href: "/wiki/commands/audit", label: "audit" },
+      { href: "/wiki/commands/check", label: "check" },
+      { href: "/wiki/commands/build", label: "build" },
+      { href: "/wiki/commands/package", label: "package" },
+      { href: "/wiki/commands/php", label: "php" },
+      { href: "/wiki/commands/prune", label: "prune" },
+    ],
+  },
+  {
+    label: "Reference",
+    pages: [
+      { href: "/wiki/resolution", label: "Resolution" },
+      { href: "/wiki/scope", label: "Scope" },
+    ],
+  },
 ];
 ---
 
@@ -28,12 +68,16 @@ const pages = [
     </header>
     <div class="sl-body">
       <nav class="sl-side" aria-label="Wiki">
-        <p class="sl-label">Guide</p>
         {
-          pages.map((page) => (
-            <a href={page.href} aria-current={path === page.href ? "page" : undefined}>
-              {page.label}
-            </a>
+          groups.map((group) => (
+            <>
+              <p class="sl-label">{group.label}</p>
+              {group.pages.map((page) => (
+                <a href={page.href} aria-current={path === page.href ? "page" : undefined}>
+                  {page.label}
+                </a>
+              ))}
+            </>
           ))
         }
       </nav>

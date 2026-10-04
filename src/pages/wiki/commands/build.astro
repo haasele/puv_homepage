@@ -1,0 +1,35 @@
+---
+import Wiki from "../../../layouts/Wiki.astro";
+---
+
+<Wiki
+  title="puv build"
+  description="Run the build script from puv.toml, or write dist/ when the manifest has no build script."
+>
+  <p class="kicker">Wiki</p>
+  <h1>build</h1>
+  <p>
+    <code>puv build</code> runs the <code>build</code> script. When the manifest has no
+    <code>build</code> script, it writes <code>dist/</code>.
+  </p>
+
+  <h2>A script</h2>
+  <pre class="block">[scripts]
+build = "php build.php"</pre>
+  <pre class="block">puv build</pre>
+  <p>
+    The script runs on the project runtime, with <code>.puv/bin</code> on <code>PATH</code>, the
+    same way <a href="/wiki/commands/run"><code>puv run build</code></a> would run that name.
+    <code>puv build</code> is the command that knows this script is the build. <code>puv run build</code>
+    is only the script.
+  </p>
+
+  <h2>No script</h2>
+  <pre class="block">puv build</pre>
+  <p>
+    With no <code>build</code> entry in <code>[scripts]</code>, <code>puv build</code> writes
+    <code>dist/</code>. Choosing <code>phar</code>, <code>zip</code>, or <code>tar</code> is
+    <a href="/wiki/commands/package"><code>puv package</code></a>. The manifest’s
+    <code>[package]</code> table is on <a href="/wiki/files">files</a>.
+  </p>
+</Wiki>

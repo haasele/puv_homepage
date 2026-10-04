@@ -1,0 +1,38 @@
+---
+import Wiki from "../../../layouts/Wiki.astro";
+---
+
+<Wiki
+  title="puv remove"
+  description="Drop a dependency from the manifest, write a new lock, and sync the project."
+>
+  <p class="kicker">Wiki</p>
+  <h1>remove</h1>
+  <p>
+    <code>puv remove</code> drops a package, relocks, and syncs. It is the reverse of
+    <a href="/wiki/commands/add"><code>puv add</code></a>.
+  </p>
+
+  <h2>A runtime dependency</h2>
+  <pre class="block">puv remove symfony/console</pre>
+  <p>
+    The line leaves <code>[dependencies]</code>. puv resolves again, writes <code>puv.lock</code>,
+    and installs that lock. Packages that were only present because <code>symfony/console</code>
+    required them leave the graph when nothing else requires them.
+  </p>
+
+  <h2>A dev dependency</h2>
+  <pre class="block">puv remove phpunit/phpunit</pre>
+  <p>
+    The same command removes a package that was added with <code>--dev</code>. The argument is
+    the package name.
+  </p>
+
+  <h2>What it does not remove</h2>
+  <p>
+    The bytes stay in <code>~/.cache/puv/</code> until something else stops referencing them.
+    <a href="/wiki/commands/prune"><code>puv prune --global</code></a> drops cache entries nothing
+    references. A project tool installed with <a href="/wiki/commands/load"><code>load</code></a>
+    is a different environment. <code>remove</code> edits the app manifest.
+  </p>
+</Wiki>

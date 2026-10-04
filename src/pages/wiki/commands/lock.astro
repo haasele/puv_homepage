@@ -1,0 +1,45 @@
+---
+import Wiki from "../../../layouts/Wiki.astro";
+---
+
+<Wiki
+  title="puv lock"
+  description="Resolve the manifest and write puv.lock. --upgrade ignores versions already locked."
+>
+  <p class="kicker">Wiki</p>
+  <h1>lock</h1>
+  <p>
+    <code>puv lock</code> resolves and writes <code>puv.lock</code>. It does not, by itself, mean
+    “install”. Install the file you just wrote with
+    <a href="/wiki/commands/sync"><code>puv sync</code></a> or
+    <a href="/wiki/commands/install"><code>puv install</code></a>.
+  </p>
+
+  <h2>Keep locked versions that still fit</h2>
+  <pre class="block">puv lock</pre>
+  <p>
+    The solver picks the highest stable release, and it prefers a version already in the lock
+    when that version still satisfies the manifest. Adding a package with
+    <a href="/wiki/commands/add"><code>puv add</code></a> already locks. You run <code>puv lock</code>
+    when you edited <code>puv.toml</code> yourself, or when
+    <code>sync</code> stopped because the manifest drifted.
+  </p>
+  <pre class="block"># edit [dependencies] in puv.toml
+puv sync
+# stops and tells you to lock
+puv lock
+puv sync</pre>
+
+  <h2>Ignore the lock</h2>
+  <pre class="block">puv lock --upgrade</pre>
+  <p>
+    <code>--upgrade</code> resolves again and ignores locked versions. A constraint of
+    <code>^7.0</code> can move from 7.0.1 to 7.4.2. It cannot move to 8.x, because that is
+    outside the constraint. Upgrades that fit, versus newer releases that do not, are also what
+    <a href="/wiki/commands/audit"><code>puv audit</code></a> lists.
+  </p>
+  <p>
+    The lock stores the SHA-256 of each archive, and <code>dist.shasum</code> when Packagist sent
+    one. Details are on <a href="/wiki/resolution">resolution</a>.
+  </p>
+</Wiki>

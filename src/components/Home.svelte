@@ -33,17 +33,17 @@
     <section class="landing-hero reveal">
       <div class="landing-hero__copy">
         <p class="landing-hero__eyebrow">puv.haasele.dev</p>
-        <h1>PHP, one binary.</h1>
+        <h1>PUV, the all-in-one tool for PHP.</h1>
         <p class="landing-hero__description">
-          PUV installs the PHP runtime, resolves the Packagist graph, and runs the project.
-          Composer is the dialect, not the program.
+          Manage your PHP runtime, packages and project with just one tool. PUV gives you the tooling,
+          you always wanted for php!
         </p>
         <InstallPanel />
-        <p class="landing-hero__note">Linux glibc · x86_64 and aarch64</p>
+        <p class="landing-hero__note">Linux, macOS, and Windows · x86_64 and aarch64</p>
       </div>
 
       <figure class="landing-hero__visual">
-        <span class="landing-hero__index">01 / session</span>
+        <span class="landing-hero__index">BASH</span>
         <pre class="landing-hero__tape"><span class="dim">$</span> puv init
 <span class="dim">$</span> puv use 8.4
 <span class="dim">$</span> puv add symfony/console
@@ -54,10 +54,6 @@ added phpunit/phpunit ^13.4
 Hello from app
 <span class="dim">$</span> puv -c 'echo PHP_VERSION;'
 8.4.23</pre>
-        <figcaption>
-          <span>Recorded 4 Oct 2026</span>
-          <span>glibc CLI</span>
-        </figcaption>
       </figure>
     </section>
 
@@ -137,8 +133,8 @@ Hello from app
           <div>
             <h3>The rest is written down</h3>
             <p>
-              The walk is in <a href="/wiki/getting-started">getting started</a>. What the binary
-              will not imitate is the <a href="/wiki/scope">scope</a>.
+              The walk is a <a href="/wiki/new-project">new project</a>. Each command has its own
+              page, starting at the <a href="/wiki/commands">overview</a>.
             </p>
           </div>
         </li>
@@ -149,20 +145,19 @@ Hello from app
       <div class="final-cta__panel">
         <span class="final-cta__mark" aria-hidden="true">✦</span>
         <p>Next</p>
-        <h2>Read the walk.</h2>
+        <h2>Got Corious? Read for yourself!</h2>
         <div class="final-cta__footer">
           <p>
-            Install, the first project, and the command list live in the wiki. The binary does not
-            shell out to Composer.
+            Look into the repo, install puv and test it for yourself!
           </p>
-          <a class="btn btn--solid" href="/wiki/getting-started">Getting started <span aria-hidden="true">↗</span></a>
+          <a class="btn btn--solid" href="/wiki/new-project">New project <span aria-hidden="true">↗</span></a>
         </div>
       </div>
     </section>
   </main>
 
   <footer class="haze-foot">
-    <span>Linux glibc · x86_64 and aarch64</span>
+    <span>Linux, macOS, and Windows · x86_64 and aarch64</span>
     <a href="https://github.com/haasele/puv">github.com/haasele/puv</a>
   </footer>
 </div>

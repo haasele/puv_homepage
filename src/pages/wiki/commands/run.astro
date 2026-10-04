@@ -1,0 +1,50 @@
+---
+import Wiki from "../../../layouts/Wiki.astro";
+---
+
+<Wiki
+  title="puv run"
+  description="Run a PHP file, a manifest script, or a one-line snippet on the project runtime."
+>
+  <p class="kicker">Wiki</p>
+  <h1>run</h1>
+  <p>
+    <code>puv run</code> executes on the project runtime from
+    <a href="/wiki/commands/use"><code>puv use</code></a>. The working directory is the project.
+    <code>.puv/bin</code> is on <code>PATH</code>, so <code>php</code> in a script is that
+    runtime. The generated autoloader is prepended. <code>vendor/</code> is not the project
+    layout, and the file does not load <code>vendor/autoload.php</code>.
+  </p>
+
+  <h2>A file</h2>
+  <pre class="block">puv run src/main.php
+puv src/main.php</pre>
+  <p>
+    <code>puv src/main.php</code> is <code>puv run src/main.php</code>. Both run that file.
+    Classes from <a href="/wiki/commands/add"><code>puv add</code></a> are already loadable.
+  </p>
+
+  <h2>A script</h2>
+  <pre class="block">[scripts]
+test = "phpunit"</pre>
+  <pre class="block">puv run test</pre>
+  <p>
+    The argument is a name in <code>[scripts]</code>. <code>phpunit</code> is looked up on the
+    project <code>PATH</code>, which includes <code>.puv/bin</code>. Declaring the script is
+    documented on <a href="/wiki/files">files</a>.
+  </p>
+
+  <h2>A snippet</h2>
+  <pre class="block">puv -c 'echo PHP_VERSION;'</pre>
+  <p>
+    <code>-c</code> runs one snippet on the project runtime and exits. It uses the same
+    autoloader and the same working directory as <code>puv run</code>.
+  </p>
+
+  <h2>What run does not do</h2>
+  <p>
+    <code>puv run build</code> runs the <code>build</code> script only.
+    <a href="/wiki/commands/build"><code>puv build</code></a> is the command that runs that
+    script or, when the manifest has no <code>build</code> script, writes <code>dist/</code>.
+  </p>
+</Wiki>

@@ -1,0 +1,40 @@
+---
+import Wiki from "../../../layouts/Wiki.astro";
+---
+
+<Wiki
+  title="puv use"
+  description="Install a PHP release and record that exact patch in puv.toml."
+>
+  <p class="kicker">Wiki</p>
+  <h1>use</h1>
+  <p>
+    <code>puv use</code> selects the project runtime. The argument is a minor line or an exact
+    patch. The manifest stores the patch, not the line you typed when you typed a line.
+  </p>
+
+  <h2>A minor line</h2>
+  <pre class="block">puv use 8.4</pre>
+  <p>
+    This installs the newest 8.4 patch and records that exact version. After it runs,
+    <code>puv.toml</code> contains something like <code>php = "8.4.23"</code>, which is the patch
+    that was newest at the time. A later <a href="/wiki/commands/sync"><code>sync</code></a> does
+    not float to a newer 8.4 on its own.
+  </p>
+
+  <h2>An exact patch</h2>
+  <pre class="block">puv use 8.4.23</pre>
+  <p>This stays on 8.4.23. It does not move to a later 8.4.</p>
+
+  <h2>Where the runtime comes from</h2>
+  <p>
+    Runtimes are prebuilt StaticPHP CLI builds for Linux glibc, <code>x86_64</code> and
+    <code>aarch64</code>. puv does not compile php-src. The download prints a progress line on
+    stderr. A cached archive stays quiet.
+  </p>
+  <p>
+    Installed builds live under <code>~/.local/share/puv/</code>. The project shim is
+    <code>.puv/bin/php</code>. Listing every installed runtime, or installing a line without
+    changing the project pin, is <a href="/wiki/commands/php"><code>puv php</code></a>.
+  </p>
+</Wiki>

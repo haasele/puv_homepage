@@ -1,0 +1,39 @@
+---
+import Wiki from "../../../layouts/Wiki.astro";
+---
+
+<Wiki
+  title="puv prune"
+  description="Drop cache entries under ~/.cache/puv that nothing references."
+>
+  <p class="kicker">Wiki</p>
+  <h1>prune</h1>
+  <p>
+    <code>puv prune --global</code> drops cache entries nothing references. The cache is
+    <code>~/.cache/puv/</code>: packages, runtime archives, and metadata.
+    <code>PUV_CACHE_DIR</code> moves that root. The map is on
+    <a href="/wiki/files">files</a>.
+  </p>
+
+  <h2>After a remove</h2>
+  <pre class="block">puv remove symfony/console
+puv prune --global</pre>
+  <p>
+    <a href="/wiki/commands/remove"><code>puv remove</code></a> drops the package from the
+    project and relocks. The archive can still sit in the cache because another project, or a
+    tool environment, might use those bytes. <code>prune --global</code> deletes an entry only
+    when nothing references it.
+  </p>
+
+  <h2>What stays</h2>
+  <pre class="block">puv php remove 8.3
+puv prune --global</pre>
+  <p>
+    Installed runtimes live under <code>~/.local/share/puv/</code>, not in the cache directory
+    prune cleans. Removing a runtime is
+    <a href="/wiki/commands/php"><code>puv php remove</code></a>. Prune then drops the runtime
+    archive if no install still points at it. Global tool environments stay in the data
+    directory. The <code>puv</code> binary from the <a href="/wiki/install">installer</a> is not
+    a cache entry.
+  </p>
+</Wiki>

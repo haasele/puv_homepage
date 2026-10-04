@@ -1,0 +1,42 @@
+---
+import Wiki from "../../../layouts/Wiki.astro";
+---
+
+<Wiki
+  title="puv init"
+  description="Start a puv project in the current directory, or create a named directory and start it there."
+>
+  <p class="kicker">Wiki</p>
+  <h1>init</h1>
+  <p>
+    <code>puv init</code> starts a project and writes <code>puv.toml</code>. The PHP patch is
+    recorded by the next command, <a href="/wiki/commands/use"><code>puv use</code></a>.
+  </p>
+
+  <h2>Current directory</h2>
+  <pre class="block">mkdir my-tool
+cd my-tool
+puv init</pre>
+  <p>
+    Use this when the directory already exists and is empty. The walk that follows is a
+    <a href="/wiki/new-project">new project</a>.
+  </p>
+
+  <h2>Create the directory</h2>
+  <pre class="block">puv init my-app
+cd my-app</pre>
+  <p>
+    The argument is the directory name. puv creates it, then writes the manifest inside it.
+  </p>
+
+  <h2>What you have afterwards</h2>
+  <p>
+    A <code>puv.toml</code> with a <code>[project]</code> table. Packages, scripts, and the
+    package format are added later. The full shape is on <a href="/wiki/files">files</a>.
+  </p>
+  <p>
+    A directory that already contains <code>composer.json</code> should use
+    <a href="/wiki/commands/contain"><code>puv contain</code></a>, not <code>init</code>. An
+    application skeleton should use <a href="/wiki/commands/create"><code>puv create</code></a>.
+  </p>
+</Wiki>

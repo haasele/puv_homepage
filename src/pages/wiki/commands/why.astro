@@ -1,0 +1,42 @@
+---
+import Wiki from "../../../layouts/Wiki.astro";
+---
+
+<Wiki
+  title="puv why"
+  description="Explain why a package or an extension is installed in this project."
+>
+  <p class="kicker">Wiki</p>
+  <h1>why</h1>
+  <p>
+    <code>puv why</code> answers why a package or an extension is installed. The argument is a
+    package name or an extension name.
+  </p>
+
+  <h2>A package you added</h2>
+  <pre class="block">puv add symfony/console
+puv why symfony/console</pre>
+  <p>
+    <code>symfony/console</code> is there because <code>[dependencies]</code> names it. That is
+    the direct case.
+  </p>
+
+  <h2>A package you did not type</h2>
+  <pre class="block">puv list
+puv why &lt;name-from-that-list&gt;</pre>
+  <p>
+    <a href="/wiki/commands/list"><code>puv list</code></a> shows dependencies of the packages
+    you added. Pass one of those names to <code>why</code> when you want the requirement that
+    brought it in, rather than the direct line from
+    <a href="/wiki/commands/add"><code>add</code></a>.
+  </p>
+
+  <h2>An extension</h2>
+  <pre class="block">puv why ext-mbstring</pre>
+  <p>
+    Extensions are virtual packages. <code>why</code> names the requirement that pulled
+    <code>ext-mbstring</code> in. If a required extension is missing from the runtime, the failure
+    happens earlier, at <a href="/wiki/commands/lock"><code>lock</code></a> time, and names the
+    extension. That rule is <a href="/wiki/resolution">resolution</a>.
+  </p>
+</Wiki>

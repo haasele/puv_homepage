@@ -11,6 +11,7 @@
   --glass-sat: 180%;
   --color-surface: rgba(255, 255, 255, 0.4);
   --color-text-inverse: hsl(220, 20%, 95%);
+  --color-on-accent: hsl(0, 0%, 100%);
   --color-accent-dark: hsl(280, 70%, 45%);
   --color-accent-glass: hsla(280, 70%, 60%, 0.1);
   --transition-fast: 150ms ease;
@@ -310,6 +311,36 @@ button.theme {
 
 .install { margin-top: 2rem; }
 
+.install-switch { display: flex; flex-direction: column; gap: 0.7rem; }
+
+.install-tabs {
+  display: flex;
+  gap: 1.1rem;
+}
+
+.install-tab {
+  margin: 0;
+  padding: 0 0 0.35rem;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  background: none;
+  color: var(--color-text-muted);
+  font: 700 0.72rem var(--font-sans);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.install-tab[aria-selected="true"] {
+  color: var(--color-text);
+  border-bottom-color: var(--color-accent);
+}
+
+.install-tab:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
 .command {
   display: flex;
   flex-wrap: wrap;
@@ -318,10 +349,12 @@ button.theme {
 }
 
 .command code {
+  flex: 1 1 16rem;
+  min-width: 0;
   font-family: var(--font-mono);
-  font-size: 0.92rem;
-  overflow-x: auto;
-  white-space: nowrap;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  white-space: normal;
   background: none;
   padding: 0;
 }
@@ -424,11 +457,15 @@ button.theme {
 
 .btn--solid {
   background: var(--color-accent-dark);
-  color: var(--color-text-inverse);
+  color: var(--color-on-accent);
   box-shadow: 0 4px 16px -4px var(--color-accent);
 }
 
-.haze a.btn--solid:hover { color: var(--color-text-inverse); text-decoration: none; }
+.haze a.btn--solid,
+.haze a.btn--solid:hover {
+  color: var(--color-on-accent);
+  text-decoration: none;
+}
 
 @media (hover: hover) {
   .btn--solid:hover {
@@ -739,17 +776,21 @@ button.theme {
   display: flex;
   flex-direction: column;
   gap: 0.15rem;
+  max-height: calc(100dvh - 5.5rem);
+  overflow: auto;
   padding-top: 0.5rem;
 }
 
 .sl-label {
-  margin: 0.4rem 0.65rem 0.25rem;
+  margin: 1.15rem 0.65rem 0.25rem;
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--sl-color-text);
 }
+
+.sl-label:first-child { margin-top: 0.4rem; }
 
 .sl-side a {
   color: var(--sl-color-text);
@@ -834,8 +875,10 @@ button.theme {
 @media (max-width: 900px) {
   .landing-hero,
   .benefits,
-  .features,
-  .sl-body { grid-template-columns: 1fr; }
+  .features { grid-template-columns: 1fr; }
+  .sl-body { grid-template-columns: minmax(0, 1fr); }
+  .sl-side,
+  .sl-content { min-width: 0; }
   .feature-slot:nth-child(2),
   .feature-card { transform: none; min-height: 0; }
   .feature-card { min-height: 16rem; }
@@ -850,9 +893,12 @@ button.theme {
   .final-cta__footer { align-items: start; flex-direction: column; }
   .sl-side {
     position: static;
-    flex-direction: row;
-    flex-wrap: wrap;
-    padding-top: 0;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    max-height: 16rem;
+    padding: 0.35rem;
+    border: 1px solid var(--sl-color-hairline);
+    border-radius: 0.5rem;
   }
   .sl-label { width: 100%; }
   .haze-nav, .sl-header { padding-inline: 0.75rem; }

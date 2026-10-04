@@ -1,0 +1,89 @@
+---
+import Wiki from "../../layouts/Wiki.astro";
+---
+
+<Wiki
+  title="Files"
+  description="puv.toml, puv.lock, the .puv directory, and the three directories under the home folder."
+>
+  <p class="kicker">Wiki</p>
+  <h1>Files</h1>
+  <p>
+    <code>puv.toml</code> is the manifest. <code>puv.lock</code> is the resolved graph you commit.
+    <code>.puv/lockb</code> is a cache of that lock for faster
+    <a href="/wiki/commands/run"><code>run</code></a> and
+    <a href="/wiki/commands/sync"><code>sync</code></a>. If <code>puv.lock</code> changes,
+    <code>lockb</code> is discarded.
+  </p>
+
+  <h2>Manifest</h2>
+  <p>
+    <a href="/wiki/commands/use"><code>puv use 8.4</code></a> records the exact patch it installed,
+    such as <code>8.4.23</code>, not the minor line you typed.
+  </p>
+  <pre class="block">[project]
+name = "my-tool"
+php = "8.4.23"
+
+[dependencies]
+symfony/console = "^7.0"
+
+[dev-dependencies]
+phpunit/phpunit = "^11.0"
+
+[tool-dependencies]
+phpstan/phpstan = "^2.0"
+
+[scripts]
+build = "php build.php"
+test = "phpunit"
+
+[package]
+format = "phar"
+entrypoint = "src/main.php"</pre>
+  <ul>
+    <li><code>[dependencies]</code> is what <a href="/wiki/commands/add"><code>puv add</code></a> writes.</li>
+    <li><code>[dev-dependencies]</code> is <code>puv add --dev</code>.</li>
+    <li><code>[tool-dependencies]</code> is a project tool. See <a href="/wiki/commands/load"><code>load</code></a>.</li>
+    <li><code>[scripts]</code> is what <a href="/wiki/commands/run"><code>puv run test</code></a> and <a href="/wiki/commands/build"><code>puv build</code></a> call.</li>
+    <li><code>[package]</code> is the default for <a href="/wiki/commands/package"><code>puv package</code></a>.</li>
+  </ul>
+  <p>
+    A drifted manifest stops <code>puv sync</code> and tells you to run
+    <a href="/wiki/commands/lock"><code>puv lock</code></a>.
+  </p>
+
+  <h2>Inside the project</h2>
+  <pre class="block">.puv/
+├── autoload.php
+├── bin/php          project runtime shim
+├── deps/            links into the content-addressed cache
+└── tools/&lt;name&gt;/    isolated tool environments</pre>
+  <p>
+    <code>vendor/</code> is not the project layout.
+    <a href="/wiki/commands/run"><code>puv run</code></a> prepends <code>autoload.php</code> and
+    puts <code>.puv/bin</code> on <code>PATH</code>.
+  </p>
+
+  <h2>Outside the project</h2>
+  <pre class="block">~/.cache/puv/          packages, runtime archives, metadata
+~/.local/share/puv/    installed runtimes, global tools, the user pin
+~/.local/bin/          shims for global tools</pre>
+  <p>Three variables move those roots. A fourth replaces the registry.</p>
+  <table>
+    <thead>
+      <tr><th>Variable</th><th>Replaces</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>PUV_CACHE_DIR</td><td>~/.cache/puv/</td></tr>
+      <tr><td>PUV_DATA_DIR</td><td>~/.local/share/puv/</td></tr>
+      <tr><td>PUV_BIN_DIR</td><td>~/.local/bin/</td></tr>
+      <tr><td>PUV_REGISTRY_URL</td><td>https://repo.packagist.org</td></tr>
+    </tbody>
+  </table>
+  <p>
+    <code>PUV_INSTALL_DIR</code> is only the destination of the
+    <a href="/wiki/install">installer</a>, not one of these three roots.
+    How a version is chosen is <a href="/wiki/resolution">resolution</a>.
+  </p>
+</Wiki>
