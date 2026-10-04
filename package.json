@@ -1,10 +1,10 @@
 {
   "name": "puv-web",
-  "description": "puv.haasele.dev — Svelte landing page, Astro wiki. Installs the latest github.com/haasele/puv release.",
+  "description": "puv.haasele.dev — Landing page and wiki for puv.",
   "type": "module",
   "version": "0.0.1",
   "engines": {
-    "node": ">=22.12.0"
+    "bun": ">=1.4.0"
   },
   "scripts": {
     "dev": "astro dev",

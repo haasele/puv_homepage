@@ -1,2 +1,6 @@
+name = "dein-worker-name"
+compatibility_date = "2026-10-01"
+[assets]
+directory = "./dist"
 [vars]
 BUN_VERSION = "1.4.2"
