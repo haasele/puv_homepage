@@ -1,0 +1,45 @@
+---
+import Base from "./Base.astro";
+import ThemeToggle from "../components/ThemeToggle.svelte";
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+const pages = [
+  { href: "/wiki/install", label: "Install" },
+  { href: "/wiki/getting-started", label: "Getting started" },
+  { href: "/wiki/scope", label: "Scope" },
+];
+---
+
+<Base title={title} description={description} surface="docs">
+  <div class="sl">
+    <header class="sl-header">
+      <a class="sl-mark" href="/">PUV</a>
+      <nav>
+        <a href="/wiki/install" aria-current="page">Docs</a>
+        <a href="https://github.com/haasele/puv">GitHub</a>
+        <ThemeToggle client:load />
+      </nav>
+    </header>
+    <div class="sl-body">
+      <nav class="sl-side" aria-label="Wiki">
+        <p class="sl-label">Guide</p>
+        {
+          pages.map((page) => (
+            <a href={page.href} aria-current={path === page.href ? "page" : undefined}>
+              {page.label}
+            </a>
+          ))
+        }
+      </nav>
+      <article class="sl-content">
+        <slot />
+      </article>
+    </div>
+  </div>
+</Base>

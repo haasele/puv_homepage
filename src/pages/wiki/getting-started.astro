@@ -1,0 +1,138 @@
+---
+import Wiki from "../../layouts/Wiki.astro";
+---
+
+<Wiki
+  title="Getting started"
+  description="Create a PUV project, pin PHP, add Packagist packages, and run them without the system PHP."
+>
+  <p class="kicker">Wiki</p>
+  <h1>Getting started</h1>
+  <p>
+    This is the path from an empty directory to a running file. Install is the
+    <a href="/wiki/install">previous page</a>.
+  </p>
+
+  <h2>Create the project</h2>
+  <pre class="block">mkdir my-tool
+cd my-tool
+puv init
+puv use 8.4</pre>
+  <p>
+    <code>puv init</code> writes <code>puv.toml</code>, <code>src/main.php</code>, and a
+    <code>.gitignore</code> that ignores <code>.puv/</code> and <code>dist/</code>. The PHP line
+    is your global pin, or <code>8.4</code> if you have none. A second <code>init</code> stops
+    unless you pass <code>--force</code>.
+  </p>
+  <p>
+    <code>puv use 8.4</code> writes that minor line into the manifest and downloads the highest
+    matching patch if it is not installed. <code>puv use --global 8.4</code> sets the pin for
+    shells that are not inside a project.
+  </p>
+
+  <h2>The manifest</h2>
+  <pre class="block">[project]
+name = "my-tool"
+php = "8.4"
+
+[dependencies]
+symfony/console = "^7.0"
+
+[dev-dependencies]
+phpunit/phpunit = "^11.0"
+
+[scripts]
+build = "php build.php"
+test = "phpunit"
+
+[package]
+format = "phar"
+entrypoint = "src/main.php"</pre>
+  <p>
+    <code>php = "8.4"</code> is a minor line. The lockfile stores the patch under
+    <code>[runtime]</code>, so a later sync does not float to a newer 8.4 by itself.
+  </p>
+
+  <h2>Add a package</h2>
+  <pre class="block">puv add symfony/console
+puv add symfony/console:^7.0
+puv add --dev phpunit/phpunit</pre>
+  <p>
+    With no constraint, PUV resolves the highest stable release and writes a caret of that
+    major.minor. On 4 Oct 2026 that was <code>symfony/console ^8.1</code> and
+    <code>phpunit/phpunit ^13.4</code>. The constraint you pass is the one that is written.
+  </p>
+  <p>
+    <code>add</code> edits <code>puv.toml</code>, resolves, writes <code>puv.lock</code>, and
+    installs into <code>.puv/</code>. Package bytes live once, under
+    <code>~/.cache/puv/packages/</code>, addressed by SHA-256. The project only symlinks them.
+  </p>
+
+  <h2>Run</h2>
+  <pre class="block">puv run src/main.php
+puv src/main.php
+puv -c 'echo PHP_VERSION;'
+puv run phpunit</pre>
+  <p>
+    <code>puv src/main.php</code> is <code>puv run src/main.php</code>. Both prepend the
+    generated autoloader, so the script does not <code>require vendor/autoload.php</code>.
+    There is no <code>vendor/</code> directory. Dev tools land in <code>.puv/bin</code>, and
+    <code>php</code> on that <code>PATH</code> is the managed runtime.
+  </p>
+  <p>
+    Argument order for <code>puv run</code>: an existing file, then a name in
+    <code>[scripts]</code>, then a project-local tool, then <code>.puv/bin</code>, then the
+    command itself.
+  </p>
+
+  <h2>Lock and sync</h2>
+  <pre class="block">puv lock
+puv lock --upgrade
+puv lock symfony/console
+puv sync
+puv install</pre>
+  <p>
+    <code>puv lock</code> rewrites the lock. It prefers versions already locked, unless you
+    pass <code>--upgrade</code> or name one package. <code>puv sync</code> and
+    <code>puv install</code> with no arguments install exactly <code>puv.lock</code>. If
+    <code>puv.toml</code> changed, they stop and tell you to lock. They do not resolve on
+    their own.
+  </p>
+  <p>
+    <code>puv remove symfony/console</code> drops the dependency from the manifest, locks
+    again, and syncs.
+  </p>
+
+  <h2>Check, build, package</h2>
+  <pre class="block">puv check
+puv build
+puv run build
+puv package
+puv package --format zip</pre>
+  <p>
+    <code>puv check</code> parses project PHP with tree-sitter and reports a drifted lock, a
+    missing runtime, a missing extension, a missing entrypoint, and a script that points at a
+    file that is not there. Deprecated constructs for the pinned minor line are warnings.
+  </p>
+  <p>
+    <code>puv build</code> syncs, then runs the <code>build</code> script if you declared one.
+    It exports <code>PUV_BUILD=1</code>. <code>puv run build</code> is only that script, without
+    the pipeline and without the variable.
+  </p>
+  <p>
+    <code>puv package</code> writes <code>dist/&lt;name&gt;.phar</code> by default. Dependencies
+    are inside the archive. The PHP runtime is not. <code>--format zip</code> and
+    <code>--format tar</code> write the same tree without a PHAR stub.
+  </p>
+
+  <h2>A Composer tree you already have</h2>
+  <pre class="block">puv contain
+puv sync</pre>
+  <p>
+    <code>contain</code> reads <code>composer.json</code> and <code>composer.lock</code> and
+    writes <code>puv.toml</code> plus <code>puv.lock</code> from the locked graph. It does not
+    delete the Composer files. <code>puv contain --clean</code> does, and only then. Plugins and
+    <code>@composer</code> scripts are skipped and listed. Details are on the
+    <a href="/wiki/scope">scope</a> page.
+  </p>
+</Wiki>

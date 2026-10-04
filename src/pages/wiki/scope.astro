@@ -1,0 +1,106 @@
+---
+import Wiki from "../../layouts/Wiki.astro";
+---
+
+<Wiki
+  title="Scope"
+  description="What the PUV binary actually does: commands, files, and the Composer behavior it does not copy."
+>
+  <p class="kicker">Wiki</p>
+  <h1>Scope</h1>
+  <p>
+    PUV is one Rust binary. The crates inside it are not separate tools you install. Composer’s
+    package names, version constraints, and the Composer v2 metadata API are the interface to
+    Packagist. The resolver, cache, environment, and PHP builds are PUV’s.
+  </p>
+
+  <h2>Commands</h2>
+  <table>
+    <thead>
+      <tr><th>Command</th><th>Does</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>puv init</td><td>Writes puv.toml, src/main.php, .gitignore</td></tr>
+      <tr><td>puv add &lt;pkg&gt;</td><td>Manifest, resolve, lock, install</td></tr>
+      <tr><td>puv add --dev &lt;pkg&gt;</td><td>Same, into dev-dependencies</td></tr>
+      <tr><td>puv install &lt;pkg&gt;</td><td>Alias of add</td></tr>
+      <tr><td>puv install</td><td>Alias of sync</td></tr>
+      <tr><td>puv remove &lt;pkg&gt;</td><td>Drop, relock, sync</td></tr>
+      <tr><td>puv lock</td><td>Resolve and write puv.lock</td></tr>
+      <tr><td>puv lock --upgrade</td><td>Ignore locked versions</td></tr>
+      <tr><td>puv lock &lt;pkg&gt;</td><td>Upgrade that one package inside its constraint</td></tr>
+      <tr><td>puv sync</td><td>Install the lock. No resolve</td></tr>
+      <tr><td>puv use &lt;version&gt;</td><td>Set the project PHP line and install it</td></tr>
+      <tr><td>puv use --global</td><td>Set the user pin</td></tr>
+      <tr><td>puv php list</td><td>Index plus what is installed</td></tr>
+      <tr><td>puv php install / remove</td><td>Manage one runtime</td></tr>
+      <tr><td>puv run …</td><td>File, script, project tool, then .puv/bin</td></tr>
+      <tr><td>puv &lt;file.php&gt;</td><td>Same as puv run</td></tr>
+      <tr><td>puv -c</td><td>Inline PHP on the project runtime</td></tr>
+      <tr><td>puv load &lt;pkg&gt;</td><td>Project-local tool, own environment</td></tr>
+      <tr><td>puv tool install</td><td>Global tool, own environment, shim in ~/.local/bin</td></tr>
+      <tr><td>puv tool list / upgrade / uninstall</td><td>Those shims and environments</td></tr>
+      <tr><td>puv check</td><td>Syntax and project consistency</td></tr>
+      <tr><td>puv build</td><td>Sync, then the build script, with PUV_BUILD=1</td></tr>
+      <tr><td>puv run build</td><td>The script only</td></tr>
+      <tr><td>puv package</td><td>PHAR by default, or zip, or tar</td></tr>
+      <tr><td>puv contain</td><td>composer.lock into puv.lock, originals kept</td></tr>
+      <tr><td>puv contain --clean</td><td>Then delete composer.json, composer.lock, vendor/</td></tr>
+      <tr><td>puv prune --global</td><td>Drop cache entries nothing references</td></tr>
+      <tr><td>puv prune --global --all</td><td>Empty the cache. Installed tools and runtimes stay</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Files</h2>
+  <p>
+    <code>puv.toml</code> is the manifest. <code>puv.lock</code> is the dependency graph you
+    commit. <code>.puv/lockb</code> is a cache of the parsed lock for faster <code>run</code> and
+    <code>sync</code>. It is not a second source of truth: if the bytes of <code>puv.lock</code>
+    change, the cache is discarded.
+  </p>
+  <pre class="block">~/.cache/puv/          packages, runtimes, metadata, indexes
+~/.local/share/puv/    installed PHP builds, global tools, the pin
+~/.local/bin/          shims from puv tool install
+
+.puv/
+├── env.json
+├── autoload.php
+├── bin/
+├── deps/              symlinks into the content-addressed cache
+└── tools/&lt;name&gt;/      one environment per loaded tool</pre>
+  <p>
+    <code>PUV_CACHE_DIR</code>, <code>PUV_DATA_DIR</code>, and <code>PUV_BIN_DIR</code> move
+    those three roots.
+  </p>
+
+  <h2>Resolution</h2>
+  <p>
+    Metadata is Composer v2: <code>https://repo.packagist.org/p2/vendor/package.json</code>. The
+    minified version list is expanded in Rust. The solver is PubGrub. It picks the highest
+    stable version, and a locked version first when one still fits. <code>php</code>,
+    <code>ext-*</code>, <code>lib-*</code>, <code>composer-plugin-api</code>, and
+    <code>composer-runtime-api</code> are virtual packages. <code>provide</code>,
+    <code>replace</code>, and <code>conflict</code> are part of the solve.
+  </p>
+  <p>
+    Minimum stability in this version is stable. <code>dev-main</code> and inline aliases are
+    not. A required extension missing from the runtime’s fixed set fails the lock instead of
+    being downloaded later.
+  </p>
+
+  <h2>What this is not</h2>
+  <ul>
+    <li>PUV does not shell out to <code>composer</code>, and it does not link Composer as a library.</li>
+    <li>It does not run scripts from a downloaded <code>composer.json</code>.</li>
+    <li>It does not load Composer plugins, and <code>contain</code> will say so when it skips them.</li>
+    <li>It does not treat <code>vendor/</code> as the project layout. Autoload is injected.</li>
+    <li>It does not compile PHP from php-src. Runtimes are prebuilt glibc CLI builds.</li>
+    <li>It does not embed the PHP runtime inside a PHAR.</li>
+    <li>Published install artifacts are Linux only. macOS and Windows are not in the release set the installer understands.</li>
+  </ul>
+  <p>
+    A normal library or CLI project with a lockfile is the migration target.
+    <code>puv contain</code> copies string scripts, skips PHP callables and
+    <code>@composer</code> lines, and leaves the Composer files in place.
+  </p>
+</Wiki>

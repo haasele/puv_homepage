@@ -1,0 +1,11 @@
+---
+import Base from "../layouts/Base.astro";
+import Home from "../components/Home.svelte";
+---
+
+<Base
+  title="PUV"
+  description="One Rust binary for PHP: the runtime, the Packagist graph, and the command that runs the project."
+>
+  <Home client:load />
+</Base>

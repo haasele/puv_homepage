@@ -1,0 +1,57 @@
+---
+import "../styles/site.css";
+
+interface Props {
+  title: string;
+  description: string;
+  surface?: "haze" | "docs";
+}
+
+const { title, description, surface = "haze" } = Astro.props;
+const fullTitle = title === "PUV" ? "PUV" : `${title} · PUV`;
+const path = Astro.url.pathname;
+---
+
+<!doctype html>
+<html lang="en" data-surface={surface}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={new URL(path, Astro.site)} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#f4f6fa" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={new URL(path, Astro.site)} />
+    <meta property="og:type" content="website" />
+    <script is:inline>
+      (function () {
+        var stored = localStorage.getItem("puv-theme");
+        var theme =
+          stored === "light" || stored === "dark"
+            ? stored
+            : matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light";
+        var root = document.documentElement;
+        root.dataset.theme = theme;
+        root.style.colorScheme = theme;
+        var docs = root.dataset.surface === "docs";
+        var color = docs
+          ? theme === "dark"
+            ? "#1a1d27"
+            : "#ffffff"
+          : theme === "dark"
+            ? "#101218"
+            : "#f4f6fa";
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute("content", color);
+      })();
+    </script>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
